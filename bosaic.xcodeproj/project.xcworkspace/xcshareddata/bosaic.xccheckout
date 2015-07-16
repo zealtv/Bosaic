@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7E5E327C-B68B-4981-944D-F3AE00360985</string>
+	<key>IDESourceControlProjectName</key>
+	<string>bosaic</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>14EEAE3D791DEB56CC355468FEF05DB764884655</key>
+		<string>https://github.com/zealtv/Bosaic.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>bosaic.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>14EEAE3D791DEB56CC355468FEF05DB764884655</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/zealtv/Bosaic.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>14EEAE3D791DEB56CC355468FEF05DB764884655</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>14EEAE3D791DEB56CC355468FEF05DB764884655</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Bosaic</string>
+		</dict>
+	</array>
+</dict>
+</plist>
