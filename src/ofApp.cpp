@@ -5,19 +5,18 @@ void ofApp::setup(){
   
   //these work
   //60, 30, 20, 15, 10, 6, 5, 4, 3, 2, 1
-  pixelsX = 28;
+  pixelsX = 30;
   pixelsY = pixelsX;
   
   portrait.loadImage("bowie.jpg");
- 
-
-  
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
 }
+
 
 //--------------------------------------------------------------
 void ofApp::draw(){
@@ -44,9 +43,8 @@ void ofApp::draw(){
       portrait.draw( ix * pw, iy * ph, pw, ph );
       
       
-      
       //get colour from portrait
-      ofColor c = portrait.getColor( portrait.getWidth()/pixelsX * ix + (portrait.getWidth()/pixelsX/2) ,
+      ofColor c = portrait.getColor( portrait.getWidth()/pixelsX * ix + (portrait.getWidth()/pixelsX/2),
                                      portrait.getHeight()/pixelsY * iy + (portrait.getHeight()/pixelsY/2) );
       
       //store brightness in alpha
@@ -59,7 +57,6 @@ void ofApp::draw(){
       
       //draw rect over pixel image to set master tone
       ofRect( ix * pw, iy * ph, pw, ph );
-      
       
     }
   }
@@ -78,7 +75,7 @@ void ofApp::draw(){
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::keyPressed( int key ){
 
   switch( key )
   {
@@ -90,7 +87,6 @@ void ofApp::keyPressed(int key){
       pixelsY = ++pixelsX;
       cout << pixelsX << endl;
       break;
-      
   }
   
   
