@@ -4,15 +4,16 @@
 
 class cell
 {
-public:
-  //attributes:
-  //posX
-  //posY
-  //colour
-  //image
-  //brightness
-  //active
+  public:
+    int posX;
+    int posY;
+    ofColor color;
+    ofImage image;
+    float brightness;
+    bool isActive;
+
+    cell( int _posX, int _posY );
   
-private:
+  private:
   
 };

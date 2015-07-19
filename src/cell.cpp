@@ -1,9 +1,9 @@
 #include "cell.h"
 
-//attributes:
-//posX
-//posY
-//colour
-//image
-//brightness
-//active
+cell::cell( int _posX, int _posY )
+{
+  posX = _posX;
+  posY = _posY;
+  
+  isActive = true;
+}
