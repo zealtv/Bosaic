@@ -25,4 +25,17 @@ class ofApp : public ofBaseApp{
 		
     portraitImage portrait;
   
+    bool isFullScreen;
+  
+  private:
+    int res;
+    bool isCapturing;
+    ofVideoGrabber grabber;
+    int camWidth;
+    int camHeight;
+    ofTexture camTexture;
+    int numGrabbers;
+    int numCaptures;
+
+  
 };
