@@ -154,9 +154,12 @@ void ofApp::draw(){
         //draw subImage
 
         ofSetColor( 100, 255 );
-
-        int randomizedIndex = RandomizedCellIndex[cellIndex + cellOffset];
-        cells[ randomizedIndex ].image.draw( ix * pw, iy * ph, pw, ph );
+        if(cells.size() > 0)
+        {
+          int randomizedIndex = RandomizedCellIndex[cellIndex + cellOffset];
+          cells[ randomizedIndex ].image.draw( ix * pw, iy * ph, pw, ph );
+        }
+        else portrait.draw( ix * pw, iy * ph, pw, ph );
         
         
         ofColor c;
@@ -191,16 +194,22 @@ void ofApp::draw(){
     c.g = 255;
     c.b = 255;
     c.a = 120;
-    c.setBrightness( 60 );
+    c.setBrightness( 70 );
     ofSetColor( c );
-    if(res != 1 ) portrait.draw( 0.0, 0.0, ofGetWidth(), ofGetHeight() );
+    if(res == 30 ) portrait.draw( 0.0, 0.0, ofGetWidth(), ofGetHeight() );
   }
   else //is capturing
   {
 
+    
+    //TODO check if image is to be rotated before applying these transformations
     ofPushMatrix();
+    ofScale( 9.0/16.0, 9.0/16.0 );
     ofRotate( camRotate );
+    ofTranslate( camWidth/2, -camHeight/2);
+
     ofSetColor( 255 );
+
     grabber.draw( 0.0, 0.0, camWidth, camHeight );
     ofPopMatrix();
     
@@ -286,9 +295,11 @@ void ofApp::loadCaptures()
     cells.push_back( cell( image ) );
   }
   
+  random_shuffle( cells.begin(), cells.end() );
+  
   cout << "number of cells " << cells.size() << endl;
   numCaptures = cells.size();
-  createRandomizedCellIndex();
+  if(cells.size() > 0 ) createRandomizedCellIndex();
   
 }
 
