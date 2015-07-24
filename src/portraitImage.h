@@ -9,9 +9,10 @@ class portraitImage : public ofImage
     void incrementRes();
     void decrementRes();
     int getRes();
-    
+    int currentRes;
+  
   private:
     vector<int> res;
     //int res[11];
-    int currentRes;
+
 };

@@ -12,7 +12,10 @@ class cell
     float brightness;
     bool isActive;
 
-    cell( int _posX, int _posY );
+    void setPos( int posX, int posY );
+    void setColor( ofColor color );
+    cell( ofImage image );
+    //cell( string  fileName );
   
   private:
   

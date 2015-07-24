@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include "portraitImage.h"
+#include "cell.h"
+
+#define MAX_CELLS 60 * 60 + 20
 
 class ofApp : public ofBaseApp{
 
@@ -36,6 +39,19 @@ class ofApp : public ofBaseApp{
     ofTexture camTexture;
     int numGrabbers;
     int numCaptures;
+    int camRotate;
+    vector<cell> cells;
+    void loadCaptures();
+    void createRandomizedCellIndex();
+//    int RandomizedCellIndex[ 60 * 60 ];
+    vector<int> RandomizedCellIndex;
+  
+    int triggerTime;
+    bool isZoomingIn;
+    bool isZoomingOut;
+  
+    int cellOffset;
+    ofColor singleColor;
 
   
 };

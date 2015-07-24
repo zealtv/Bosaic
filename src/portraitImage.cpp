@@ -13,7 +13,7 @@ portraitImage::portraitImage()
   res.push_back( 15 );
   res.push_back( 20 );
   res.push_back( 30 );
-  res.push_back( 60 );
+ // res.push_back( 60 );
   
   currentRes = 9;
 }
