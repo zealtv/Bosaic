@@ -13,6 +13,8 @@ void ofApp::setup(){
   isFullScreen = false;
   isCapturing = false;
   
+  toggleTime = 10000;
+  
   
   
   //set up cam
@@ -56,6 +58,9 @@ void ofApp::setup(){
   portrait.loadImage("bowie.jpg");
   
   res = portrait.getRes();
+  
+  
+  
 }
 
 
@@ -82,17 +87,35 @@ void ofApp::update(){
 
   if( isZoomingOut )
   {
-    if(  (ofGetElapsedTimeMillis() - triggerTime) > 70 )
+    if(  ofGetElapsedTimeMillis() > 70 )
     {
       portrait.incrementRes();
-      res = portrait.getRes();      
-      triggerTime = ofGetElapsedTimeMillis();
+      res = portrait.getRes();
+      ofResetElapsedTimeCounter();
       cellOffset = (int) ofRandom( 40 );
     }
     if( portrait.getRes() == 30 ) isZoomingOut = false;
   }
   
   
+  
+  if( ofGetElapsedTimeMillis() > toggleTime )
+  {
+    cout<< "Bang!" << endl;
+    if( portrait.getRes() == 30 )
+    {
+      cout<< "zooming in" << endl;
+      isZoomingIn = true;
+      ofResetElapsedTimeCounter();
+    }
+    if( portrait.getRes() == 1 )
+    {
+      cout<< "zooming out" << endl;
+      isZoomingOut = true;
+      ofResetElapsedTimeCounter();
+    }
+    
+  }
   
 }
 
@@ -147,7 +170,7 @@ void ofApp::draw(){
         //store brightness in alpha
         c.a = 255;
         
-        float brightness = 0.9;
+        float brightness = 0.7;
         c.setBrightness( c.getBrightness() * brightness );
         
         ofSetColor( c );
