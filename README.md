@@ -12,6 +12,7 @@ Press 'f' to go fullscreen
 
 //Capturing images
 //--------------------------------------
+
 press space bar to preview the webcam
 press space bar again to capture an image or press escape to cancel
 

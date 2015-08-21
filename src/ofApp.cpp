@@ -14,7 +14,9 @@ void ofApp::setup(){
   isCapturing = false;
   
   toggleTime = 10000;
+  transistionSpeed = 200;
   
+  TOP_RES = 60;
   
   
   //set up cam
@@ -38,10 +40,12 @@ void ofApp::setup(){
     }
   }
   
-  grabber.setDeviceID( 1 );
+  grabber.setDeviceID( numGrabbers -1  );
   grabber.setDesiredFrameRate( 60 );
   grabber.initGrabber( camWidth, camHeight );
   grabber.setAnchorPoint( camWidth/2, camHeight/2 );
+  
+  camTexture = &grabber.getTextureReference();
   
   camRotate = 90;
   
@@ -71,7 +75,7 @@ void ofApp::update(){
   if( isZoomingIn )
   {
     
-    if(  ofGetElapsedTimeMillis() > 70 )
+    if(  ofGetElapsedTimeMillis() > transistionSpeed )
     {
       portrait.decrementRes();
       res = portrait.getRes();
@@ -80,29 +84,28 @@ void ofApp::update(){
     }
     if( portrait.getRes() == 1 )
     {
-      singleColor = portrait.getColor( ofRandom( portrait.getWidth() ), ofRandom( portrait.getHeight()/2 + portrait.getHeight()/4 ) );
+      singleColor = portrait.getColor( ofRandom( portrait.getWidth() ), ofRandom( portrait.getHeight()/2 ) );
       isZoomingIn = false;
     }
   }
 
   if( isZoomingOut )
   {
-    if(  ofGetElapsedTimeMillis() > 70 )
+    if(  ofGetElapsedTimeMillis() > transistionSpeed )
     {
       portrait.incrementRes();
       res = portrait.getRes();
       ofResetElapsedTimeCounter();
       cellOffset = (int) ofRandom( 40 );
     }
-    if( portrait.getRes() == 30 ) isZoomingOut = false;
+    if( portrait.getRes() == TOP_RES ) isZoomingOut = false;
   }
   
   
   
   if( ofGetElapsedTimeMillis() > toggleTime )
   {
-    cout<< "Bang!" << endl;
-    if( portrait.getRes() == 30 )
+    if( portrait.getRes() == TOP_RES && ofGetElapsedTimeMillis() > toggleTime * 2.0 )
     {
       cout<< "zooming in" << endl;
       isZoomingIn = true;
@@ -123,7 +126,15 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
   
+  //aspectRatio = 1.77778;
+  
   ofClear( 0 );
+  
+  
+  ofPushMatrix();
+  //scale to preserve aspect ratio
+  //ofTranslate( ofGetWidth() * (1.0/aspectRatio)/2.0, 0.0 );
+  //ofScale( 1.0/aspectRatio, 1.0 );
 
   
   if( !isCapturing )
@@ -138,7 +149,11 @@ void ofApp::draw(){
       for( ix = 0; ix < res; ix++ )
       {
         
+
         
+        ofPushMatrix();
+        //ANIMATE
+        if( doAnimate ) ofTranslate( 0.0, 0.0, sin(  0.2*(ix+iy) + (float)ofGetElapsedTimeMillis()/1600.0 ) * 10.0 );
         
         //DRAW CELLS
         //--------------------------------------
@@ -153,9 +168,12 @@ void ofApp::draw(){
         
         //draw subImage
 
+        
         ofSetColor( 100, 255 );
         if(cells.size() > 0)
         {
+
+          
           int randomizedIndex = RandomizedCellIndex[cellIndex + cellOffset];
           cells[ randomizedIndex ].image.draw( ix * pw, iy * ph, pw, ph );
         }
@@ -167,8 +185,6 @@ void ofApp::draw(){
         if( res == 1 ) c = singleColor;
         else  c = portrait.getColor( portrait.getWidth()/res * ix + (portrait.getWidth()/res/2),
                                                    portrait.getHeight()/res * iy + (portrait.getHeight()/res/2) );
-
-
         
         //store brightness in alpha
         c.a = 255;
@@ -182,6 +198,9 @@ void ofApp::draw(){
         ofRect( ix * pw, iy * ph, pw, ph );
         
         
+        ofPopMatrix();
+
+        
       }
     }
     
@@ -194,26 +213,31 @@ void ofApp::draw(){
     c.g = 255;
     c.b = 255;
     c.a = 120;
-    c.setBrightness( 70 );
+    c.setBrightness( 90 );
     ofSetColor( c );
-    if(res == 30 ) portrait.draw( 0.0, 0.0, ofGetWidth(), ofGetHeight() );
+    if(res == 60 || res == 30 ) portrait.draw( 0.0, 0.0, ofGetWidth(), ofGetHeight() );
   }
   else //is capturing
   {
 
     
-    //TODO check if image is to be rotated before applying these transformations
     ofPushMatrix();
-    ofScale( 9.0/16.0, 9.0/16.0 );
-    ofRotate( camRotate );
-    ofTranslate( camWidth/2, -camHeight/2);
-
+    
     ofSetColor( 255 );
+    ofTranslate( camWidth/2, camHeight/2 );
+    ofPixels grabberPixels = grabber.getPixelsRef();
+    grabberPixels.rotate90( 1 );
+    camTexture->loadData( grabberPixels );
+    camTexture->draw( 0.0, 0.0, ofGetWidth(), ofGetHeight() );
 
-    grabber.draw( 0.0, 0.0, camWidth, camHeight );
+
     ofPopMatrix();
     
   }
+  
+  
+  //endscale
+  ofPopMatrix();
   
 }
 
@@ -226,11 +250,15 @@ void ofApp::keyPressed( int key ){
     case '-':
       portrait.decrementRes();
       res = portrait.getRes();
+      TOP_RES = res;
+      
       break;
       
     case '=':
       portrait.incrementRes();
       res = portrait.getRes();
+      TOP_RES = res;
+      
       break;
       
     case 'f':
@@ -238,11 +266,18 @@ void ofApp::keyPressed( int key ){
       ofSetFullscreen( isFullScreen );
       break;
       
+    case 'a':
+      doAnimate = !doAnimate;
+      if( TOP_RES == 60 ) doAnimate = false;
+      break;
+      
     case ' ':
       if( isCapturing )
       {
+        //ofColor(255);
+        //ofRect( 0, 0, ofGetWidth(), ofGetHeight() );
         //capture image
-        cout << "CAPTURING!" << endl;;
+        cout << "CAPTURING!" << endl;
         ofImage capture;
         capture.grabScreen( 0, 0, ofGetWidth(), ofGetHeight() );
         capture.saveImage( "captures/frame" + ofToString( numCaptures++ ) + ".png" );

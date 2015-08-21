@@ -4,7 +4,8 @@
 #include "portraitImage.h"
 #include "cell.h"
 
-#define MAX_CELLS 60 * 60 + 20
+#define MAX_CELLS 60 * 60 * 2
+
 
 class ofApp : public ofBaseApp{
 
@@ -32,11 +33,12 @@ class ofApp : public ofBaseApp{
   
   private:
     int res;
+    float aspectRatio;
     bool isCapturing;
     ofVideoGrabber grabber;
     int camWidth;
     int camHeight;
-    ofTexture camTexture;
+    ofTexture *camTexture;
     int numGrabbers;
     int numCaptures;
     int camRotate;
@@ -49,6 +51,11 @@ class ofApp : public ofBaseApp{
     int toggleTime;
     bool isZoomingIn;
     bool isZoomingOut;
+    int transistionSpeed;
+  
+    bool doAnimate;
+  
+    int TOP_RES;
   
     int cellOffset;
     ofColor singleColor;
