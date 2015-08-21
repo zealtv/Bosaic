@@ -59,12 +59,15 @@ void ofApp::setup(){
   loadCaptures();
   cellOffset = (int) ofRandom( 40 );
 
+  mosaicFbo.allocate( ofGetWidth(), ofGetHeight() );
   
   //set up portrait
   //--------------------------------------
   portrait.loadImage("bowie.jpg");
   
   res = portrait.getRes();
+  
+  
   
   
   
@@ -274,7 +277,6 @@ void ofApp::keyPressed( int key ){
 
       isFullScreen = !isFullScreen;
       ofSetFullscreen( isFullScreen );
-//      mosaicFbo.allocate( ofGetWidth(), ofGetHeight() );
       break;
       
     case 'a':
@@ -284,12 +286,12 @@ void ofApp::keyPressed( int key ){
     case ' ':
       if( isCapturing )
       {
-        //ofColor(255);
-        //ofRect( 0, 0, ofGetWidth(), ofGetHeight() );
         //capture image
         cout << "CAPTURING!" << endl;
         ofImage capture;
-        capture.grabScreen( 0, 0, ofGetWidth(), ofGetHeight() );
+        ofPixels grabberPixels = grabber.getPixelsRef();
+        grabberPixels.rotate90( 1 );
+        capture.setFromPixels( grabberPixels );
         capture.saveImage( "captures/frame" + ofToString( numCaptures++ ) + ".png" );
         loadCaptures();
         
