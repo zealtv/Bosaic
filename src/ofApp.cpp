@@ -19,6 +19,9 @@ void ofApp::setup(){
   TOP_RES = 60;
   
   
+  //aspectRatio = 1.77778;
+  aspectRatio = 0.5625;
+  
   //set up cam
   //--------------------------------------
   camWidth = 1920;
@@ -70,6 +73,9 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+  
+  if( TOP_RES == 60 ) doAnimate = false;
+  
   grabber.update();
   
   if( isZoomingIn )
@@ -126,15 +132,18 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
   
-  //aspectRatio = 1.77778;
+
   
   ofClear( 0 );
   
   
+  float aspectFactor = ( ofGetHeight() * aspectRatio )/ofGetWidth();
+  
   ofPushMatrix();
   //scale to preserve aspect ratio
-  //ofTranslate( ofGetWidth() * (1.0/aspectRatio)/2.0, 0.0 );
-  //ofScale( 1.0/aspectRatio, 1.0 );
+  ofTranslate( ofGetWidth()/2.0, 0.0 );
+  ofScale( aspectFactor, 1.0 );
+  ofTranslate( -ofGetWidth()/2.0, 0.0 );
 
   
   if( !isCapturing )
@@ -262,13 +271,14 @@ void ofApp::keyPressed( int key ){
       break;
       
     case 'f':
+
       isFullScreen = !isFullScreen;
       ofSetFullscreen( isFullScreen );
+//      mosaicFbo.allocate( ofGetWidth(), ofGetHeight() );
       break;
       
     case 'a':
       doAnimate = !doAnimate;
-      if( TOP_RES == 60 ) doAnimate = false;
       break;
       
     case ' ':

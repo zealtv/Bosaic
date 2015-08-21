@@ -48,6 +48,8 @@ class ofApp : public ofBaseApp{
 //    int RandomizedCellIndex[ 60 * 60 ];
     vector<int> RandomizedCellIndex;
   
+    ofFbo mosaicFbo;
+  
     int toggleTime;
     bool isZoomingIn;
     bool isZoomingOut;
